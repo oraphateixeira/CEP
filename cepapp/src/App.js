@@ -1,23 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import SearchBar from "./components/SearchBar";
+import AddressList from "./components/AddressList";
+import AddressDetails from "./components/AddressDetails";
 
 function App() {
+  const [addresses, setAddresses] = useState([]); // Lista de resultados
+  const [selectedAddress, setSelectedAddress] = useState(null); // Endereço selecionado
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Busca de CEP</h1>
+
+      {/* Campo de busca */}
+      <SearchBar setAddresses={setAddresses} />
+
+      {/* Lista de endereços */}
+      <AddressList addresses={addresses} onSelect={setSelectedAddress} />
+
+      {/* Detalhes do endereço selecionado */}
+      {selectedAddress && <AddressDetails address={selectedAddress} />}
     </div>
   );
 }
