@@ -6,24 +6,52 @@ import {
   Typography,
   DialogActions,
   Button,
+  IconButton
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
-function AddressDetails({ address, onClose }) {
+function AddressDetails({ address, open, onClose }) {
+  if (!address) return null;
+
   return (
-    <Dialog open={true} onClose={onClose}>
-      <DialogTitle>Detalhes do Endereço</DialogTitle>
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+      <DialogTitle>
+        Detalhes do Endereço
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
       <DialogContent>
-        <Typography>CEP: {address.cep}</Typography>
-        <Typography>Logradouro: {address.logradouro || "Não informado"}</Typography>
-        <Typography>Bairro: {address.bairro}</Typography>
-        <Typography>Cidade: {address.localidade}</Typography>
-        <Typography>Estado: {address.uf}</Typography>
-        <Typography>
-          Complemento: {address.complemento || "Nenhum"}
+        <Typography variant="body1" gutterBottom>
+          <strong>CEP:</strong> {address.cep}
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          <strong>Logradouro:</strong> {address.logradouro || "Não informado"}
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          <strong>Bairro:</strong> {address.bairro || "Não informado"}
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          <strong>Cidade:</strong> {address.localidade}
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          <strong>Estado:</strong> {address.uf}
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          <strong>Complemento:</strong> {address.complemento || "Nenhum"}
         </Typography>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Fechar</Button>
+        <Button onClick={onClose} variant="contained">Fechar</Button>
       </DialogActions>
     </Dialog>
   );
