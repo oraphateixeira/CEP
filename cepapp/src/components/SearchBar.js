@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { TextField, Button, Box } from "@mui/material";
 
 function SearchBar({ setAddresses }) {
   const [cep, setCep] = useState("");
@@ -23,15 +24,17 @@ function SearchBar({ setAddresses }) {
   };
 
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="Digite o CEP"
+    <Box display="flex" gap={2} justifyContent="center" mt={2}>
+      <TextField
+        label="Digite o CEP"
+        variant="outlined"
         value={cep}
         onChange={(e) => setCep(e.target.value)}
       />
-      <button onClick={handleSearch}>Buscar</button>
-    </div>
+      <Button variant="contained" color="primary" onClick={handleSearch}>
+        Buscar
+      </Button>
+    </Box>
   );
 }
 

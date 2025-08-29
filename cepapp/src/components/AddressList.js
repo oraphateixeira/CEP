@@ -1,17 +1,29 @@
 import React from "react";
+import { List, ListItem, ListItemText, Paper, Typography } from "@mui/material";
 
 function AddressList({ addresses, onSelect }) {
+  if (addresses.length === 0) {
+    return <Typography align="center">Nenhum endereço encontrado.</Typography>;
+  }
+
   return (
-    <div>
-      {addresses.length === 0 && <p>Nenhum endereço encontrado.</p>}
-      <ul>
+    <Paper elevation={2}>
+      <List>
         {addresses.map((address, index) => (
-          <li key={index} onClick={() => onSelect(address)}>
-            {address.logradouro}, {address.bairro} - {address.localidade}/{address.uf}
-          </li>
+          <ListItem
+            button
+            key={index}
+            onClick={() => onSelect(address)}
+            sx={{ "&:hover": { backgroundColor: "#f5f5f5" } }}
+          >
+            <ListItemText
+              primary={`${address.logradouro || "Sem logradouro"}, ${address.bairro}`}
+              secondary={`${address.localidade}/${address.uf}`}
+            />
+          </ListItem>
         ))}
-      </ul>
-    </div>
+      </List>
+    </Paper>
   );
 }
 

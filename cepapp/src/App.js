@@ -2,24 +2,31 @@ import React, { useState } from "react";
 import SearchBar from "./components/SearchBar";
 import AddressList from "./components/AddressList";
 import AddressDetails from "./components/AddressDetails";
+import { Container, Typography, Box, Paper } from "@mui/material";
 
 function App() {
   const [addresses, setAddresses] = useState([]); // Lista de resultados
   const [selectedAddress, setSelectedAddress] = useState(null); // Endereço selecionado
 
   return (
-    <div className="App">
-      <h1>Busca de CEP</h1>
+    <Container maxWidth="md" sx={{ mt: 5 }}>
+      <Paper elevation={3} sx={{ p: 4, borderRadius: 3 }}>
+        <Typography variant="h4" align="center" gutterBottom>
+          Busca de CEP
+        </Typography>
 
-      {/* Campo de busca */}
-      <SearchBar setAddresses={setAddresses} />
+        {/* Campo de busca */}
+        <SearchBar setAddresses={setAddresses} />
 
-      {/* Lista de endereços */}
-      <AddressList addresses={addresses} onSelect={setSelectedAddress} />
+        <Box mt={3}>
+          {/* Lista de endereços */}
+          <AddressList addresses={addresses} onSelect={setSelectedAddress} />
 
-      {/* Detalhes do endereço selecionado */}
-      {selectedAddress && <AddressDetails address={selectedAddress} />}
-    </div>
+          {/* Detalhes do endereço selecionado */}
+          {selectedAddress && <AddressDetails address={selectedAddress} />}
+        </Box>
+      </Paper>
+    </Container>
   );
 }
 
