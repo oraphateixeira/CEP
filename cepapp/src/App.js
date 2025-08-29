@@ -2,19 +2,20 @@ import React, { useState } from "react";
 import SearchBar from "./components/SearchBar";
 import AddressList from "./components/AddressList";
 import AddressDetails from "./components/AddressDetails";
-import { Container, Typography, Box, Paper, Alert, TextField } from "@mui/material";
+import { Container, Typography, Paper, Box, CircularProgress } from "@mui/material";
 
 function App() {
   const [addresses, setAddresses] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(null);
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [filter, setFilter] = useState("");
 
-  const filteredAddresses = addresses.filter(addr =>
-    addr.logradouro?.toLowerCase().includes(filter.toLowerCase()) ||
-    addr.bairro?.toLowerCase().includes(filter.toLowerCase())
-  );
+  const addAddress = (address) => {
+    setAddresses((prev) => [address, ...prev]);
+  };
+
+  const removeAddress = (index) => {
+    setAddresses((prev) => prev.filter((_, i) => i !== index));
+  };
 
   return (
     <Container maxWidth="md" sx={{ mt: 5 }}>
@@ -23,32 +24,28 @@ function App() {
           Busca de CEP
         </Typography>
 
-        {error && (
-          <Box mb={2}>
-            <Alert severity="error" onClose={() => setError("")}>
-              {error}
-            </Alert>
+        <SearchBar addAddress={addAddress} setLoading={setLoading} />
+
+        {loading && (
+          <Box display="flex" justifyContent="center" my={2}>
+            <CircularProgress />
           </Box>
         )}
 
-        <SearchBar setAddresses={setAddresses} setError={setError} setLoading={setLoading} />
-
         <Box mt={3}>
-          <TextField
-            label="Filtrar resultados (logradouro ou bairro)"
-            variant="outlined"
-            fullWidth
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-            sx={{ mb: 2 }}
+          <AddressList
+            addresses={addresses}
+            onSelect={setSelectedAddress}
+            onRemove={removeAddress}
           />
-
-          {loading && <Typography align="center">Carregando...</Typography>}
-
-          <AddressList addresses={filteredAddresses} onSelect={setSelectedAddress} />
-
-          {selectedAddress && <AddressDetails address={selectedAddress} />}
         </Box>
+
+        {selectedAddress && (
+          <AddressDetails
+            address={selectedAddress}
+            onClose={() => setSelectedAddress(null)}
+          />
+        )}
       </Paper>
     </Container>
   );

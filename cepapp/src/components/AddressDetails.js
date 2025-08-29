@@ -1,13 +1,18 @@
 import React from "react";
-import { Card, CardContent, Typography } from "@mui/material";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  Typography,
+  DialogActions,
+  Button,
+} from "@mui/material";
 
-function AddressDetails({ address }) {
+function AddressDetails({ address, onClose }) {
   return (
-    <Card sx={{ mt: 3, borderRadius: 2 }} elevation={3}>
-      <CardContent>
-        <Typography variant="h6" gutterBottom>
-          Detalhes do Endereço
-        </Typography>
+    <Dialog open={true} onClose={onClose}>
+      <DialogTitle>Detalhes do Endereço</DialogTitle>
+      <DialogContent>
         <Typography>CEP: {address.cep}</Typography>
         <Typography>Logradouro: {address.logradouro || "Não informado"}</Typography>
         <Typography>Bairro: {address.bairro}</Typography>
@@ -16,8 +21,11 @@ function AddressDetails({ address }) {
         <Typography>
           Complemento: {address.complemento || "Nenhum"}
         </Typography>
-      </CardContent>
-    </Card>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose}>Fechar</Button>
+      </DialogActions>
+    </Dialog>
   );
 }
 
