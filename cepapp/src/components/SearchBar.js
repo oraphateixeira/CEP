@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { TextField, Button, Box } from "@mui/material";
 
-function SearchBar({ setAddresses, setError }) {
+function SearchBar({ setAddresses, setError, setLoading }) {
   const [cep, setCep] = useState("");
 
   const handleSearch = async () => {
@@ -14,6 +14,7 @@ function SearchBar({ setAddresses, setError }) {
     }
 
     setError("");
+    setLoading(true);
 
     try {
       const res = await fetch(`https://viacep.com.br/ws/${cleanCep}/json/`);
@@ -21,6 +22,7 @@ function SearchBar({ setAddresses, setError }) {
       if (!res.ok) {
         setAddresses([]);
         setError("Erro ao acessar a API. Tente novamente.");
+        setLoading(false);
         return;
       }
 
@@ -29,15 +31,18 @@ function SearchBar({ setAddresses, setError }) {
       if (data.erro) {
         setAddresses([]);
         setError("CEP não encontrado.");
+        setLoading(false);
         return;
       }
 
       setAddresses([data]);
       setError("");
+      setLoading(false);
     } catch (err) {
       console.error("Erro na requisição:", err);
       setAddresses([]);
       setError("Erro na requisição. Verifique sua conexão e tente novamente.");
+      setLoading(false);
     }
   };
 
